@@ -1,0 +1,24 @@
+# Ignore everything
+*
+
+# Un-ignore directories
+!*/
+
+# Un-ignore files with extensions
+!*.*
+
+# Specifically un-ignore 'makefile'
+!makefile
+
+# Ignore image files
+*.bmp
+*.png
+
+# Ignore wav files
+*.wav
+
+# Ignore object files
+*.o
+
+# Ignore .csv files
+*.csv
