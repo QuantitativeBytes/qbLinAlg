@@ -9,3 +9,80 @@ Many excellent linear algebra libraries already exist for C++ and as such this c
 
 https://www.youtube.com/playlist?list=PL3WoIG-PLjSv9vFx2dg0BqzDZH_6qzF8-
 
+## Specific functions
+
+### qbEIG.h
+
+Functions for computing the eigenvectors and eigenvalues for a given matrix. As of the last episode, this contains an implementation of the power iteration method which will return the dominant eigenvector / eigenvalue pair for a given matrix. In future episodes I will go on to look at the general case for computing all of the eigenvectors / eigenvalues using other methods.
+
+https://youtu.be/hnLyWa2_hd8
+
+### qbLinSolve.h
+
+Function for solving systems of linear equations. Uses an implementation of Gaussian elimination and back-substitution.
+
+https://youtu.be/GKkUU4T6o08
+
+https://youtu.be/NJIv0xH-S0I
+
+https://youtu.be/KsrlAnEmRNE
+
+### qbLSQ.h
+
+Function for computing the linear least squares solution to an over-determined system of linear equations.
+
+https://youtu.be/4UVPXs3vIHk
+
+https://youtu.be/fG1JXf7WSQw
+
+### qbMatrix.h
+
+Class for handling matrices. Implements a number of useful functions:
+
+#### qbMatrix - Inverse()
+
+Compute the inverse of the matrix using the Gauss-Jordan elimination method.
+
+https://youtu.be/wOlG_fnd3v8
+
+https://youtu.be/AEuNHdgn-R8
+
+https://youtu.be/JWM8Y8b1ZVQ
+
+#### qbMatrix - RowEchelon()
+
+Convert the matrix to row echelon form.
+
+#### qbMatrix - Transpose()
+
+Transpose the matrix.
+
+#### qbMatrix - Determinant()
+
+Compute the determinant of the matrix.
+
+https://youtu.be/YVk0nYrwBb0
+
+### qbVector.h
+
+Class for handling vectors. Implements a number of useful functions:
+
+https://youtu.be/YfWX-EsvX7c
+
+https://youtu.be/c5AB5T7LBCI
+
+#### qbVector - Normalized()
+
+Returns a normalized copy of the vector.
+
+#### qbVector - Normalize()
+
+Normalizes the vector 'in-place'.
+
+#### qbVector - dot()
+
+Computes the vector dot product.
+
+#### qbVector - cross()
+
+Computes the vector cross product.
