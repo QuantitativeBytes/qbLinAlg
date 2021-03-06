@@ -68,12 +68,16 @@ int qbQR(const qbMatrix2<T> &A, qbMatrix2<T> &Q, qbMatrix2<T> &R)
 		// Transpose nMat.
 		qbMatrix2<T> nMatT = nMat.Transpose();
 		
-		// Create an identity matrix.
+		// Create an identity matrix of the appropriate size.
 		qbMatrix2<T> I (numCols-j, numCols-j);
 		I.SetToIdentity();
 		
 		// Compute Ptemp.
 		qbMatrix2<T> Ptemp = I - static_cast<T>(2.0) * nMat * nMatT;
+
+		//std::cout << std::endl;
+		//Ptemp.PrintMatrix();
+		//std::cout << std::endl;	
 
 		// Form the P matrix with the original dimensions.
 		qbMatrix2<T> P (numCols, numCols);
@@ -84,14 +88,14 @@ int qbQR(const qbMatrix2<T> &A, qbMatrix2<T> &Q, qbMatrix2<T> &R)
 			{
 				P.SetElement(row, col, Ptemp.GetElement(row-j, col-j));
 			}
-		}
+		}	
 		
 		// Store the result into the Plist vector.
 		Plist.push_back(P);
 		
 		// Apply this transform matrix to A and use this result
 		// next time through the loop.
-		inputMatrix = P * A;
+		inputMatrix = P * inputMatrix;
 	}
 	
 	// Compute Q.
@@ -105,8 +109,9 @@ int qbQR(const qbMatrix2<T> &A, qbMatrix2<T> &Q, qbMatrix2<T> &R)
 	Q = Qmat;
 	
 	// Compute R.
-	qbMatrix2<T> Rmat = Plist.at(numCols-2);
-	for (int i=(numCols-3); i>=0; --i)
+	int numElements = Plist.size();
+	qbMatrix2<T> Rmat = Plist.at(numElements-1);
+	for (int i=(numElements-2); i>=0; --i)
 	{
 		Rmat = Rmat * Plist.at(i);
 	}

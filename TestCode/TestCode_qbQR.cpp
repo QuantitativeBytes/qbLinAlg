@@ -42,25 +42,45 @@ int main()
 	cout << "Testing QR decomposition code." << endl;
 	cout << "**********************************************" << endl;
 	cout << endl;
-	
-	cout << "Testing with simple 3x3 matrix:" << endl;
 
-	std::vector<double> simpleData = {0.5, 0.75, 0.5, 1.0, 0.5, 0.75, 0.25, 0.25, 0.25};
-	qbMatrix2<double> testMatrix(3, 3, simpleData);
+	{	
+		cout << "Testing with simple 3x3 matrix:" << endl;
 	
-	testMatrix.PrintMatrix();
+		std::vector<double> simpleData = {0.5, 0.75, 0.5, 1.0, 0.5, 0.75, 0.25, 0.25, 0.25};
+		qbMatrix2<double> testMatrix(3, 3, simpleData);
+		
+		testMatrix.PrintMatrix();
+		
+		cout << endl;
+		cout << "Computing QR decomposition..." << endl;
+		qbMatrix2<double> Q (3,3);
+		qbMatrix2<double> R (3,3);
+		int status = qbQR(testMatrix, Q, R);
+		cout << "R = " << endl;
+		R.PrintMatrix();
+		cout << endl;
+		cout << "Q = " << endl;
+		Q.PrintMatrix();
+		cout << endl;
+	}
 	
-	cout << endl;
-	cout << "Computing QR decomposition..." << endl;
-	qbMatrix2<double> Q (3,3);
-	qbMatrix2<double> R (3,3);
-	int status = qbQR(testMatrix, Q, R);
-	cout << "R = " << endl;
-	R.PrintMatrix();
-	cout << endl;
-	cout << "Q = " << endl;
-	Q.PrintMatrix();
-	cout << endl;
+	{
+		cout << "Testing with simple 4x4 matrix:" << endl;
+		std::vector<double> simpleData = {1.0, 5.0, 3.0, 4.0, 7.0, 8.0, 2.0, 9.0, 7.0, 3.0, 2.0, 1.0, 9.0, 3.0, 5.0, 7.0};
+		qbMatrix2<double> testMatrix(4, 4, simpleData);
+		testMatrix.PrintMatrix();
+		cout << endl;
+		cout << "Computing QR decomposition..." << endl;
+		qbMatrix2<double> Q (4,4);
+		qbMatrix2<double> R (4,4);
+		int status = qbQR(testMatrix, Q, R);
+		cout << "R = " << endl;
+		R.PrintMatrix();
+		cout << endl;
+		cout << "Q = " << endl;
+		Q.PrintMatrix();
+		cout << endl;		
+	}
 	
 	return 0;
 }
