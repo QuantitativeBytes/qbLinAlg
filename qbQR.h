@@ -25,7 +25,7 @@ int qbQR(const qbMatrix2<T> &A, qbMatrix2<T> &Q, qbMatrix2<T> &R)
 	if (!inputMatrix.IsSquare())
 		return QBQR_MATRIXNOTSQUARE;
 		
-	// Determine the numer of columns (and rows, since the matrix is square).
+	// Determine the number of columns (and rows, since the matrix is square).
 	int numCols = inputMatrix.GetNumCols();
 	
 	// Create a vector to store the P matrices for each column.
@@ -60,7 +60,7 @@ int qbQR(const qbMatrix2<T> &A, qbMatrix2<T> &Q, qbMatrix2<T> &R)
 		// Compute the n-vector.
 		qbVector<T> n = u.Normalized();
 		
-		// Convert n to a matrix so that we can tranpose it.
+		// Convert n to a matrix so that we can transpose it.
 		qbMatrix2<T> nMat (numCols-j, 1);
 		for (int i=0; i<(numCols-j); ++i)
 			nMat.SetElement(i, 0, n.GetElement(i));
@@ -74,10 +74,6 @@ int qbQR(const qbMatrix2<T> &A, qbMatrix2<T> &Q, qbMatrix2<T> &R)
 		
 		// Compute Ptemp.
 		qbMatrix2<T> Ptemp = I - static_cast<T>(2.0) * nMat * nMatT;
-
-		//std::cout << std::endl;
-		//Ptemp.PrintMatrix();
-		//std::cout << std::endl;	
 
 		// Form the P matrix with the original dimensions.
 		qbMatrix2<T> P (numCols, numCols);
@@ -93,7 +89,7 @@ int qbQR(const qbMatrix2<T> &A, qbMatrix2<T> &Q, qbMatrix2<T> &R)
 		// Store the result into the Plist vector.
 		Plist.push_back(P);
 		
-		// Apply this transform matrix to A and use this result
+		// Apply this transform matrix to inputMatrix and use this result
 		// next time through the loop.
 		inputMatrix = P * inputMatrix;
 	}
