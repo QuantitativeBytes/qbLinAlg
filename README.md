@@ -11,6 +11,12 @@ https://www.youtube.com/playlist?list=PL3WoIG-PLjSv9vFx2dg0BqzDZH_6qzF8-
 
 ## Specific functions
 
+### qbQR.h
+
+Function to perform QR decomposition on the given matrix, returning an orthogonal matrix, Q, and an upper-triangular matrix, R. Uses the method of Householder reflections to perform the decomposition.
+
+https://youtu.be/MR54VHqhROw
+
 ### qbEIG.h
 
 Functions for computing the eigenvectors and eigenvalues for a given matrix. As of the last episode, this contains an implementation of the power iteration method which will return the dominant eigenvector / eigenvalue pair for a given matrix. In future episodes I will go on to look at the general case for computing all of the eigenvectors / eigenvalues using other methods.
