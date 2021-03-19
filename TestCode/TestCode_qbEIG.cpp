@@ -67,29 +67,66 @@ int main()
 {
 	cout << "**********************************************" << endl;
 	cout << "Testing eigenvalue and eigenvector code." << endl;
+	cout << "Power Iteration Method." << endl;
 	cout << "**********************************************" << endl;
 	cout << endl;
 	
-	cout << "Testing with simple 3x3 matrix:" << endl;
+	{
+		cout << "Testing with simple 3x3 matrix:" << endl;
+		
+		//std::vector<double> simpleData = {1.0, 2.0, 3.0, 4.0};
+		//qbMatrix2<double> testMatrix(2, 2, simpleData);
 	
-	//std::vector<double> simpleData = {1.0, 2.0, 3.0, 4.0};
-	//qbMatrix2<double> testMatrix(2, 2, simpleData);
-
-	std::vector<double> simpleData = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
-	qbMatrix2<double> testMatrix(3, 3, simpleData);
+		std::vector<double> simpleData = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
+		qbMatrix2<double> testMatrix(3, 3, simpleData);
+		
+		PrintMatrix(testMatrix);
+		
+		cout << endl;
+		cout << "Computing eigenvector and eigenvalue..." << endl;
+		double eigenValue;
+		qbVector<double> eigenVector;
+		qbEIG_PIt(testMatrix, eigenValue, eigenVector);
+		
+		cout << "Eigenvector: " << endl;
+		PrintVector(eigenVector);
+		cout << "Eigenvalue = " << eigenValue << "." << endl;
+		cout << endl;
+	}
 	
-	PrintMatrix(testMatrix);
+	cout << "**********************************************" << endl;
+	cout << "Testing eigenvalue and eigenvector code." << endl;
+	cout << "Inverse-Power Iteration Method." << endl;
+	cout << "**********************************************" << endl;
+	cout << endl;	
 	
-	cout << endl;
-	cout << "Computing eigenvector and eigenvalue..." << endl;
-	double eigenValue;
-	qbVector<double> eigenVector;
-	qbEIG_PIt(testMatrix, eigenValue, eigenVector);
-	
-	cout << "Eigenvector: " << endl;
-	PrintVector(eigenVector);
-	cout << "Eigenvalue = " << eigenValue << "." << endl;
-	cout << endl;
+	{
+		cout << "Testing with a simple 3x3 matrix:" << endl;
+		std::vector<double> simpleData = {0.5, 0.75, 0.5, 1.0, 0.5, 0.75, 0.25, 0.25, 0.25};
+		qbMatrix2<double> testMatrix(3, 3, simpleData);
+		PrintMatrix(testMatrix);
+		cout << endl;
+		
+		// Define the eigenvalues.
+		std::vector<double> eigenValues = {1.5962551, -0.37253087, 0.02627577};
+		
+		// Setup a vector for the eigenvector.
+		qbVector<double> eigenVector(3);
+		
+		// Loop through each eigenvalue.
+		for (auto currentValue : eigenValues)
+		{
+			cout << "Estimated eigenvector for eigenvalue " << currentValue << " = " << endl;
+			int returnStatus = qbInvPIt<double>(testMatrix, currentValue, eigenVector);
+			PrintVector(eigenVector);
+			
+			if (returnStatus == QBEIG_MAXITERATIONSEXCEEDED)
+				cout << "*** Maximum iterations exceeded ***" << endl;
+			
+			cout << endl;
+		}
+		
+	}
 	
 	return 0;
 }
