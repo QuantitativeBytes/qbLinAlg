@@ -17,9 +17,9 @@ constexpr int QBEIG_MAXITERATIONSEXCEEDED = -2;
 
 // Function to estimate (real) eigenvalues using QR decomposition.
 /* Note that this is only valid for matrices that have ALL real
-	eigenvalues. The only matrices that are guarenteed to have only
+	eigenvalues. The only matrices that are guaranteed to have only
 	real eigenvalues are symmetric matrices. Therefore, this function
-	only works properly for those. */
+	is only guaranteed to work with symmetric matrices. */
 template <typename T>
 int qbEigQR(const qbMatrix2<T> &inputMatrix, std::vector<T> &eigenValues)
 {
@@ -44,7 +44,8 @@ int qbEigQR(const qbMatrix2<T> &inputMatrix, std::vector<T> &eigenValues)
 	// Loop through each iteration.
 	int maxIterations = 100;
 	int iterationCount = 0;
-	while (iterationCount < maxIterations)
+	bool continueFlag = true;
+	while ((iterationCount < maxIterations) && continueFlag)
 	{
 		// Compute the QR decomposition of A.
 		int returnValue = qbQR<T>(A, Q, R);
@@ -52,6 +53,12 @@ int qbEigQR(const qbMatrix2<T> &inputMatrix, std::vector<T> &eigenValues)
 		// Compute the next value of A as the product of R and Q.
 		A = R * Q;
 		
+		/* Check if A is now close enough to being upper-triangular.
+			We can do this using the IsRowEchelon() function from the 
+			qbMatrix2 class. */
+		if (A.IsRowEchelon())
+			continueFlag = false;
+						
 		// Increment iterationCount.
 		iterationCount++;
 	}

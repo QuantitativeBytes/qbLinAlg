@@ -145,6 +145,9 @@ int main()
 		std::vector<double> eigenValues;
 		int returnStatus = qbEigQR(testMatrix, eigenValues);
 		
+		if (returnStatus == QBEIG_MAXITERATIONSEXCEEDED)
+			cout << ">>> Maximum iterations exceeded <<<" << endl;		
+		
 		// Display the eigenvalues.
 		cout << "The estimated eigenvalues are:" << endl;
 		for (auto currentValue : eigenValues)
@@ -163,6 +166,9 @@ int main()
 		// Compute the eigenvalues.
 		std::vector<double> eigenValues;
 		int returnStatus = qbEigQR(testMatrix, eigenValues);
+		
+		if (returnStatus == QBEIG_MAXITERATIONSEXCEEDED)
+			cout << ">>> Maximum iterations exceeded <<<" << endl;			
 		
 		// Display the eigenvalues.
 		cout << "The estimated eigenvalues are:" << endl;
