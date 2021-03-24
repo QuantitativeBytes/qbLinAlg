@@ -130,12 +130,47 @@ int main()
 	
 	cout << "**********************************************" << endl;
 	cout << "Testing eigenvalue and eigenvector code." << endl;
+	cout << "New IsSymmetric() function in qbMatrix2 class." << endl;
+	cout << "**********************************************" << endl;
+	cout << endl;			
+	
+	{
+		cout << "Testing with a simple symmetric matrix." << endl;
+		std::vector<double> simpleData = {4.0, -7.0, 6.0, -7.0, -2.0, 13.0, 6.0, 13.0, 5.0};
+		qbMatrix2<double> testMatrix(3, 3, simpleData);
+		PrintMatrix(testMatrix);
+		cout << endl;
+		
+		cout << "Matrix is symmetric: ";
+		if (testMatrix.IsSymmetric())
+			cout << "True." << endl;
+		else
+			cout << "False." << endl;
+	}
+	
+	{
+		cout << "Testing with a simple non-symmetric matrix." << endl;
+		std::vector<double> simpleData = {4.0, -7.0, 6.0, 7.0, -2.0, 13.0, 6.0, 13.0, 5.0};
+		qbMatrix2<double> testMatrix(3, 3, simpleData);
+		PrintMatrix(testMatrix);
+		cout << endl;
+		
+		cout << "Matrix is symmetric: ";
+		if (testMatrix.IsSymmetric())
+			cout << "True." << endl;
+		else
+			cout << "False." << endl;
+	}		
+	
+	cout << endl << endl;	
+	cout << "**********************************************" << endl;
+	cout << "Testing eigenvalue and eigenvector code." << endl;
 	cout << "Eigenvalues by QR decomposition." << endl;
 	cout << "**********************************************" << endl;
 	cout << endl;		
 	
 	{
-		cout << "Testing with a simple 3x3 matrix:" << endl;
+		cout << "Testing with a simple (non-symmetric) 3x3 matrix:" << endl;
 		std::vector<double> simpleData = {0.5, 0.75, 0.5, 1.0, 0.5, 0.75, 0.25, 0.25, 0.25};
 		qbMatrix2<double> testMatrix(3, 3, simpleData);
 		PrintMatrix(testMatrix);
@@ -146,7 +181,10 @@ int main()
 		int returnStatus = qbEigQR(testMatrix, eigenValues);
 		
 		if (returnStatus == QBEIG_MAXITERATIONSEXCEEDED)
-			cout << ">>> Maximum iterations exceeded <<<" << endl;		
+			cout << ">>> Maximum iterations exceeded <<<" << endl;
+			
+		if (returnStatus == QBEIG_MATRIXNOTSYMMETRIC)
+			cout << ">>> Matrix not symmetric. <<<" << endl;	
 		
 		// Display the eigenvalues.
 		cout << "The estimated eigenvalues are:" << endl;
@@ -155,6 +193,49 @@ int main()
 			
 		cout << endl << endl;	
 	}
+	
+	{
+		cout << "Testing with a simple (symmetric) 3x3 matrix:" << endl;
+		std::vector<double> simpleData = {6.0, 5.5, -1.0, 5.5, 1.0, -2.0, -1.0, -2.0, -3.0};
+		qbMatrix2<double> testMatrix(3, 3, simpleData);
+		PrintMatrix(testMatrix);
+		cout << endl;
+		
+		// Compute the eigenvalues.
+		std::vector<double> eigenValues;
+		int returnStatus = qbEigQR(testMatrix, eigenValues);
+		
+		if (returnStatus == QBEIG_MAXITERATIONSEXCEEDED)
+			cout << ">>> Maximum iterations exceeded <<<" << endl;
+			
+		if (returnStatus == QBEIG_MATRIXNOTSYMMETRIC)
+			cout << ">>> Matrix not symmetric. <<<" << endl;	
+		
+		// Display the eigenvalues.
+		cout << "The estimated eigenvalues are:" << endl;
+		for (auto currentValue : eigenValues)
+			cout << std::setprecision(6) << currentValue << " ";
+			
+		cout << endl << endl;
+			
+		// Setup a vector for the eigenvector.
+		qbVector<double> eigenVector(3);
+		
+		// Loop through each eigenvalue.
+		for (auto currentValue : eigenValues)
+		{
+			cout << "Estimated eigenvector for eigenvalue " << currentValue << " = " << endl;
+			int returnStatus = qbInvPIt<double>(testMatrix, currentValue, eigenVector);
+			PrintVector(eigenVector);
+			
+			if (returnStatus == QBEIG_MAXITERATIONSEXCEEDED)
+				cout << "*** Maximum iterations exceeded ***" << endl;
+			
+			cout << endl;
+		}			
+			
+		cout << endl << endl;	
+	}	
 	
 	{
 		cout << "Testing with an example that should have complex eigenvalues:" << endl;
@@ -166,6 +247,9 @@ int main()
 		// Compute the eigenvalues.
 		std::vector<double> eigenValues;
 		int returnStatus = qbEigQR(testMatrix, eigenValues);
+		
+		if (returnStatus == QBEIG_MATRIXNOTSYMMETRIC)
+			cout << ">>> Matrix not symmetric. <<<" << endl;		
 		
 		if (returnStatus == QBEIG_MAXITERATIONSEXCEEDED)
 			cout << ">>> Maximum iterations exceeded <<<" << endl;			
@@ -194,7 +278,7 @@ int main()
 		}
 		
 		cout << endl << endl;
-	}	
+	}
 	
 	return 0;
 }

@@ -14,6 +14,7 @@
 // Define error codes.
 constexpr int QBEIG_MATRIXNOTSQUARE = -1;
 constexpr int QBEIG_MAXITERATIONSEXCEEDED = -2;
+constexpr int QBEIG_MATRIXNOTSYMMETRIC = -3;
 
 // Function to estimate (real) eigenvalues using QR decomposition.
 /* Note that this is only valid for matrices that have ALL real
@@ -30,6 +31,10 @@ int qbEigQR(const qbMatrix2<T> &inputMatrix, std::vector<T> &eigenValues)
 	if (!A.IsSquare())
 		return QBEIG_MATRIXNOTSQUARE;
 		
+	// Verify that the matrix is symmetric.
+	if (!A.IsSymmetric())
+		return QBEIG_MATRIXNOTSYMMETRIC;		
+		
 	// The number of eigenvalues is equal to the number of rows.
 	int numRows = A.GetNumRows();
 	
@@ -42,7 +47,7 @@ int qbEigQR(const qbMatrix2<T> &inputMatrix, std::vector<T> &eigenValues)
 	qbMatrix2<T> R (numRows, numRows);
 	
 	// Loop through each iteration.
-	int maxIterations = 100;
+	int maxIterations = 1000;
 	int iterationCount = 0;
 	bool continueFlag = true;
 	while ((iterationCount < maxIterations) && continueFlag)

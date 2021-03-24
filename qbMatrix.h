@@ -91,6 +91,7 @@ class qbMatrix2
 		bool IsSquare();
 		bool IsRowEchelon();	
 		bool IsNonZero();	
+		bool IsSymmetric();
 		void PrintMatrix();
 
 	private:
@@ -1094,6 +1095,46 @@ bool qbMatrix2<T>::IsRowEchelon()
 	/* If the matrix is in row-echelon form, then cumulative sum should
 		still equal zero, otherwise the matrix cannot be in row-echelon form. */
 	return CloseEnough(cumulativeSum, 0.0);
+}
+
+// Function to test whether the matrix is symmetric.
+template <class T>
+bool qbMatrix2<T>::IsSymmetric()
+{
+	/* First test that the matrix is square, if it is
+		not, then it cannot by symmetric. */
+	if (!this->IsSquare())
+		return false;
+		
+	// Now test for symmetry about the diagonal.
+	T currentRowElement = static_cast<T>(0.0);
+	T currentColElement = static_cast<T>(0.0);
+	bool returnFlag = true;
+	int diagIndex = 0;
+	while ((diagIndex < m_nCols) && returnFlag)
+	{
+		int rowIndex = diagIndex + 1;
+		while ((rowIndex < m_nRows) && returnFlag)
+		{
+			currentRowElement = this->GetElement(rowIndex, diagIndex);
+			currentColElement = this->GetElement(diagIndex, rowIndex);
+			
+			// Compare the row and column elements.
+			if (!CloseEnough(currentRowElement, currentColElement))
+				returnFlag = false;
+			
+			// Increment row index.
+			rowIndex++;
+		}
+		
+		// Increment diagIndex.
+		diagIndex++;
+		
+	}
+	
+	// Return the result.
+	return returnFlag;
+	
 }
 
 // Function to swap rows i and j (in place).
