@@ -19,9 +19,11 @@ https://youtu.be/MR54VHqhROw
 
 ### qbEIG.h
 
-Functions for computing the eigenvectors and eigenvalues for a given matrix. As of the last episode, this contains an implementation of the power iteration method which will return the dominant eigenvector / eigenvalue pair for a given matrix. In future episodes I will go on to look at the general case for computing all of the eigenvectors / eigenvalues using other methods.
+Functions for computing the eigenvectors and eigenvalues for a given matrix. Contains an implementation of the power iteration method for computing the dominant eigenvector, the inverse-power-iteration method and an implementation of the QR algorithm to estimate eigenvalue / eigenvector pairs for a given symmetric matrix.
 
 https://youtu.be/hnLyWa2_hd8
+
+https://youtu.be/tYqOrvUOMFc
 
 ### qbLinSolve.h
 
