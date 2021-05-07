@@ -53,7 +53,7 @@ class qbMatrix2
     // Convert to row echelon form.
     qbMatrix2<T> RowEchelon();
     // Return the transpose.
-    qbMatrix2<T> Transpose();
+    qbMatrix2<T> Transpose() const;
     
     // Compute determinant.
     T Determinant();
@@ -81,7 +81,7 @@ class qbMatrix2
     // qbMatrix2 * qbVector.
     template <class U> friend qbVector<U> operator* (const qbMatrix2<U>& lhs, const qbVector<U>& rhs);
 
-		bool Separate(qbMatrix2<T> *matrix1, qbMatrix2<T> *matrix2, int colNum);
+		bool Separate(qbMatrix2<T> &matrix1, qbMatrix2<T> &matrix2, int colNum);
 		bool Join(const qbMatrix2<T>& matrix2);
 		qbMatrix2<T> FindSubMatrix(int rowNum, int colNum);
 		
@@ -93,6 +93,7 @@ class qbMatrix2
 		bool IsNonZero();	
 		bool IsSymmetric();
 		void PrintMatrix();
+		void PrintMatrix(int precision);
 
 	private:
 		int Sub2Ind(int row, int col) const;
@@ -474,7 +475,7 @@ qbMatrix2<T> operator* (const qbMatrix2<T>& lhs, const qbMatrix2<T>& rhs)
 			// Loop through each column on the RHS.
 			for (int rhsCol=0; rhsCol<r_numCols; rhsCol++)
 			{
-				T elementResult = 0.0;
+				T elementResult = static_cast<T>(0.0);
 				// Loop through each element of this LHS row.
 				for (int lhsCol=0; lhsCol<l_numCols; lhsCol++)
 				{
@@ -555,7 +556,7 @@ SEPARATE THE MATRIX INTO TWO PARTS, AROUND THE COLUMN NUMBER PROVIDED
 (Note that the output is returned into the two qbMatrix2<T> pointers in the input argument list)
 /* *************************************************************************************************/
 template <class T>
-bool qbMatrix2<T>::Separate(qbMatrix2<T> *matrix1, qbMatrix2<T> *matrix2, int colNum)
+bool qbMatrix2<T>::Separate(qbMatrix2<T> &matrix1, qbMatrix2<T> &matrix2, int colNum)
 {
 	// Compute the sizes of the new matrices.
 	int numRows = m_nRows;
@@ -563,8 +564,8 @@ bool qbMatrix2<T>::Separate(qbMatrix2<T> *matrix1, qbMatrix2<T> *matrix2, int co
 	int numCols2 = m_nCols - colNum;
 	
 	// Resize the two matrices to the proper dimensions.
-	matrix1->Resize(numRows, numCols1);
-	matrix2->Resize(numRows, numCols1);
+	matrix1.Resize(numRows, numCols1);
+	matrix2.Resize(numRows, numCols1);
 	
 	// Loop over the original matrix and store data into the appropriate elements of the two
 	// output matrices.
@@ -574,11 +575,11 @@ bool qbMatrix2<T>::Separate(qbMatrix2<T> *matrix1, qbMatrix2<T> *matrix2, int co
 		{
 			if (col < colNum)
 			{
-				matrix1->SetElement(row, col, this->GetElement(row, col));
+				matrix1.SetElement(row, col, this->GetElement(row, col));
 			}
 			else
 			{
-				matrix2->SetElement(row, col-colNum, this->GetElement(row, col));
+				matrix2.SetElement(row, col-colNum, this->GetElement(row, col));
 			}
 		}
 	}
@@ -803,7 +804,7 @@ bool qbMatrix2<T>::Inverse()
 		// Separate the result into the left and right halves.
 		qbMatrix2<T> leftHalf;
 		qbMatrix2<T> rightHalf;
-		this->Separate(&leftHalf, &rightHalf, originalNumCols);
+		this->Separate(leftHalf, rightHalf, originalNumCols);
 		
 		// When the process is complete, the left half should be the identity matrix.
 		if (leftHalf == identityMatrix)
@@ -832,7 +833,7 @@ bool qbMatrix2<T>::Inverse()
 COMPUTE AND RETURN THE TRANSPOSE
 /* *************************************************************************************************/
 template <class T>
-qbMatrix2<T> qbMatrix2<T>::Transpose()
+qbMatrix2<T> qbMatrix2<T>::Transpose() const
 {
 	// Form the output matrix.
 	// Note that we reverse the order of rows and columns, as this will be the transpose.
@@ -1203,6 +1204,22 @@ void qbMatrix2<T>::PrintMatrix()
 	  for (int col = 0; col<nCols; ++col)
     {
 	    std::cout << std::fixed << std::setprecision(3) << this->GetElement(row, col) << "  ";
+    }
+	std::cout << std::endl;
+	}    
+}
+
+// A simple function to print a matrix to stdout, with specified precision.
+template <class T>
+void qbMatrix2<T>::PrintMatrix(int precision)
+{
+	int nRows = this->GetNumRows();
+	int nCols = this->GetNumCols();
+	for (int row = 0; row<nRows; ++row)
+  {
+	  for (int col = 0; col<nCols; ++col)
+    {
+	    std::cout << std::fixed << std::setprecision(precision) << this->GetElement(row, col) << "  ";
     }
 	std::cout << std::endl;
 	}    

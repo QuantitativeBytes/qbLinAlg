@@ -47,7 +47,7 @@ int qbEigQR(const qbMatrix2<T> &inputMatrix, std::vector<T> &eigenValues)
 	qbMatrix2<T> R (numRows, numRows);
 	
 	// Loop through each iteration.
-	int maxIterations = 1000;
+	int maxIterations = 10e3;
 	int iterationCount = 0;
 	bool continueFlag = true;
 	while ((iterationCount < maxIterations) && continueFlag)
