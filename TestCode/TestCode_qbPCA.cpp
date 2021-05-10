@@ -144,7 +144,7 @@ int main()
 			{
 				for (int i=0; i<newX.GetNumRows(); ++i)
 				{
-					outputFile << newX.GetElement(i, 0) << "," << newX.GetElement(i,1) << endl;
+					outputFile << newX.GetElement(i, 0) << "," << newX.GetElement(i, 1) << endl;
 				}
 				outputFile.close();
 			}			
