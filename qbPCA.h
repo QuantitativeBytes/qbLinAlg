@@ -116,7 +116,7 @@ int ComputeEigenvectors(const qbMatrix2<T> &covarianceMatrix, qbMatrix2<T> &eige
 	return returnStatus;
 }
 
-/* Function to compute the principal components of te supplied data. */
+/* Function to compute the principal components of the supplied data. */
 template <typename T>
 int qbPCA(const qbMatrix2<T> &inputData, qbMatrix2<T> &outputComponents)
 {
