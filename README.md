@@ -11,6 +11,12 @@ https://www.youtube.com/playlist?list=PL3WoIG-PLjSv9vFx2dg0BqzDZH_6qzF8-
 
 ## Specific functions
 
+### qbPCA.h
+
+Implementation of Principal Component Analysis (PCA).
+
+https://youtu.be/ifxUSa5r_Ls
+
 ### qbQR.h
 
 Function to perform QR decomposition on the given matrix, returning an orthogonal matrix, Q, and an upper-triangular matrix, R. Uses the method of Householder reflections to perform the decomposition.
