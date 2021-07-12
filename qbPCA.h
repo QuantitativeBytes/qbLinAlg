@@ -1,3 +1,7 @@
+// This file is part of the qbLinAlg linear algebra library.
+// Copyright (c) 2021 Michael Bennett
+// MIT license
+
 #ifndef QBPCA_H
 #define QBPCA_H
 
