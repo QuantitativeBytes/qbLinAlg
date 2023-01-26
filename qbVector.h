@@ -183,12 +183,19 @@ qbVector<T> qbVector<T>::operator+ (const qbVector<T> &rhs) const
 	if (m_nDims != rhs.m_nDims)
 		throw std::invalid_argument("Vector dimensions do not match.");
 	
+	/*
 	std::vector<T> resultData;
 	for (int i=0; i<m_nDims; ++i)
 		resultData.push_back(m_vectorData.at(i) + rhs.m_vectorData.at(i));
 		
 	qbVector<T> result(resultData);
 	return result;
+	*/
+	qbVector<T> resultData (m_nDims);
+	for (int i=0; i<m_nDims; ++i)
+		resultData.SetElement(i, (m_vectorData.at(i) + rhs.m_vectorData.at(i)));
+		
+	return resultData;	
 }
 
 template <class T>
@@ -198,24 +205,38 @@ qbVector<T> qbVector<T>::operator- (const qbVector<T> &rhs) const
 	if (m_nDims != rhs.m_nDims)
 		throw std::invalid_argument("Vector dimensions do not match.");
 	
+	/*
 	std::vector<T> resultData;
 	for (int i=0; i<m_nDims; ++i)
 		resultData.push_back(m_vectorData.at(i) - rhs.m_vectorData.at(i));
 		
 	qbVector<T> result(resultData);
 	return result;
+	*/
+	qbVector<T> resultData (m_nDims);
+	for (int i=0; i<m_nDims; ++i)
+		resultData.SetElement(i, (m_vectorData.at(i) - rhs.m_vectorData.at(i)));
+		
+	return resultData;	
 }
 
 template <class T>
 qbVector<T> qbVector<T>::operator* (const T &rhs) const
 {
 	// Perform scalar multiplication.
+	/*
 	std::vector<T> resultData;
 	for (int i=0; i<m_nDims; ++i)
 		resultData.push_back(m_vectorData.at(i) * rhs);
 		
 	qbVector<T> result(resultData);
 	return result;
+	*/
+	qbVector<T> resultData (m_nDims);
+	for (int i=0; i<m_nDims; ++i)
+		resultData.SetElement(i, (m_vectorData.at(i) * rhs));
+		
+	return resultData;	
 }
 
 /* **************************************************************************************************
@@ -225,12 +246,20 @@ template <class T>
 qbVector<T> operator* (const T &lhs, const qbVector<T> &rhs)
 {
 	// Perform scalar multiplication.
+	/*
 	std::vector<T> resultData;
 	for (int i=0; i<rhs.m_nDims; ++i)
 		resultData.push_back(lhs * rhs.m_vectorData.at(i));
 		
 	qbVector<T> result(resultData);
 	return result;
+	*/
+	std::vector<T> resultData (rhs.m_nDims);
+	for (int i=0; i<rhs.m_nDims; ++i)
+		resultData.at(i) = (lhs * rhs.m_vectorData.at(i));
+		
+	qbVector<T> result(resultData);
+	return result;	
 }
 
 /* **************************************************************************************************
