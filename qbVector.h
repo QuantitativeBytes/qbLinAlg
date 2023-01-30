@@ -193,6 +193,11 @@ void qbVector<T>::Normalize()
 
 /* **************************************************************************************************
 OVERLOADED OPERATORS
+Note the changes that have been made since the videos about this first code were made. The original
+code has been left, but commented out. Ultimately it was necessary to make some changes to 
+improve the performance of these functions in terms of run time.
+See this episode of my ray tracing in C++ series for further information:
+https://youtu.be/-5kLk7_bs0U
 /* *************************************************************************************************/
 template <class T>
 qbVector<T> qbVector<T>::operator+ (const qbVector<T> &rhs) const
