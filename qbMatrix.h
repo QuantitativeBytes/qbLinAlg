@@ -2,7 +2,7 @@
 
 /*
 MIT License
-Copyright (c) 2023 Michael Bennett	
+
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction, 
@@ -44,6 +44,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 #include <vector>
 #include <exception>
 #include "qbVector.h"
+#include "qbVector3.hpp"
+#include "qbVector4.hpp"
 
 template <class T>
 class qbMatrix2
@@ -102,6 +104,12 @@ class qbMatrix2
     
     // qbMatrix2 * qbVector.
     template <class U> friend qbVector<U> operator* (const qbMatrix2<U>& lhs, const qbVector<U>& rhs);
+    
+    // qbMatrix2 * qbVector3.
+    template <class U> friend qbVector3<U> operator* (const qbMatrix2<U>& lhs, const qbVector3<U>& rhs);  
+    
+    // qbMatrix2 * qbVector4.
+    template <class U> friend qbVector4<U> operator* (const qbMatrix2<U>& lhs, const qbVector4<U>& rhs);      
 
 		bool Separate(qbMatrix2<T> &matrix1, qbMatrix2<T> &matrix2, int colNum);
 		bool Join(const qbMatrix2<T>& matrix2);
@@ -419,6 +427,69 @@ qbMatrix2<T> operator- (const qbMatrix2<T>& lhs, const T& rhs)
 /* **************************************************************************************************
 THE * OPERATOR
 /* *************************************************************************************************/
+// matrix * qbVector4
+template <class T>
+qbVector4<T> operator* (const qbMatrix2<T>& lhs, const qbVector4<T>& rhs)
+{
+	// Verify the dimensions of the inputs.
+	if (lhs.m_nCols != 4)
+	{
+		std::cout << "*** qbMatrix.h ***" << std::endl;
+		std::cout << "Vector of 3 elements." << std::endl;
+		std::cout << "Matrix of " << lhs.m_nCols << " columns." << std::endl;
+		std::cout << "Are these equal: " << (lhs.m_nCols == rhs.GetNumDims()) << std::endl;
+		throw std::invalid_argument("Number of columns in matrix must equal number of rows in vector.");
+	}
+	
+	// Setup the vector for the output.
+	qbVector4<T> result;
+	
+	// Loop over rows and columns and perform the multiplication operation element-by-element.
+	for (int row=0; row<lhs.m_nRows; ++row)
+	{
+		T cumulativeSum = static_cast<T>(0.0);
+		cumulativeSum += (lhs.GetElement(row,0) * rhs.m_v1);
+		cumulativeSum += (lhs.GetElement(row,1) * rhs.m_v2);
+		cumulativeSum += (lhs.GetElement(row,2) * rhs.m_v3);
+		cumulativeSum += (lhs.GetElement(row,3) * rhs.m_v4);
+
+		result.SetElement(row, cumulativeSum);
+	}
+	
+	return result;
+}
+
+// matrix * qbVector3
+template <class T>
+qbVector3<T> operator* (const qbMatrix2<T>& lhs, const qbVector3<T>& rhs)
+{
+	// Verify the dimensions of the inputs.
+	if (lhs.m_nCols != 3)
+	{
+		std::cout << "*** qbMatrix.h ***" << std::endl;
+		std::cout << "Vector of 3 elements." << std::endl;
+		std::cout << "Matrix of " << lhs.m_nCols << " columns." << std::endl;
+		std::cout << "Are these equal: " << (lhs.m_nCols == rhs.GetNumDims()) << std::endl;
+		throw std::invalid_argument("Number of columns in matrix must equal number of rows in vector.");
+	}
+	
+	// Setup the vector for the output.
+	qbVector3<T> result;
+	
+	// Loop over rows and columns and perform the multiplication operation element-by-element.
+	for (int row=0; row<lhs.m_nRows; ++row)
+	{
+		T cumulativeSum = static_cast<T>(0.0);
+		cumulativeSum += (lhs.GetElement(row,0) * rhs.m_x);
+		cumulativeSum += (lhs.GetElement(row,1) * rhs.m_y);
+		cumulativeSum += (lhs.GetElement(row,2) * rhs.m_z);
+
+		result.SetElement(row, cumulativeSum);
+	}
+	
+	return result;
+}
+
 // matrix * vector
 template <class T>
 qbVector<T> operator* (const qbMatrix2<T>& lhs, const qbVector<T>& rhs)
