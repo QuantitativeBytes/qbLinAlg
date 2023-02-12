@@ -99,11 +99,12 @@ class qbMatrix33
     template <class U> friend qbMatrix33<U> operator* (const qbMatrix33<U>& lhs, const U& rhs);
     
     // qbMatrix33 * qbVector3.
-    template <class U> friend qbVector4<U> operator* (const qbMatrix33<U>& lhs, const qbVector3<U>& rhs);      
+    template <class U> friend qbVector3<U> operator* (const qbMatrix33<U>& lhs, const qbVector3<U>& rhs);      
 
 	private:
 		int Sub2Ind(int row, int col) const;
 		T cofactorDeterminant(T e1, T e2, T e3, T e4);
+		bool CloseEnough(T f1, T f2);
 
 	public:
 		//T *m_matrixData;
@@ -311,12 +312,12 @@ qbMatrix33<T> operator- (const qbMatrix33<T>& lhs, const T& rhs)
 /* **************************************************************************************************
 THE * OPERATOR
 /* *************************************************************************************************/
-// matrix * qbVector4
+// matrix * qbVector3
 template <class T>
-qbVector4<T> operator* (const qbMatrix33<T>& lhs, const qbVector3<T>& rhs)
+qbVector3<T> operator* (const qbMatrix33<T>& lhs, const qbVector3<T>& rhs)
 {
 	// Setup the vector for the output.
-	qbVector4<T> result;
+	qbVector3<T> result;
 	
 	// Loop over rows and columns and perform the multiplication operation element-by-element.
 	for (int row=0; row<lhs.m_nRows; ++row)
@@ -408,7 +409,6 @@ bool qbMatrix33<T>::operator== (const qbMatrix33<T>& rhs)
 	bool flag = true;
 	for (int i=0; i<9; ++i)
 	{
-		//if (this->m_matrixData[i] != rhs.m_matrixData[i])
 		if (!CloseEnough(this->m_matrixData[i], rhs.m_matrixData[i]))
 			flag = false;
 	}
@@ -475,6 +475,9 @@ bool qbMatrix33<T>::Inverse()
 	
 	// Compute the inverse.
 	T determinant = Determinant();
+	if (CloseEnough(determinant, 0.0))
+		return false;
+	
 	qbMatrix33<T> result = (1.0 / determinant) * adjT;
 	
 	// And store 'in place'.
@@ -518,6 +521,12 @@ template <class T>
 T qbMatrix33<T>::cofactorDeterminant(T e1, T e2, T e3, T e4)
 {
 	return (e1 * e4) - (e2 * e3);
+}
+
+template <class T>
+bool qbMatrix33<T>::CloseEnough(T f1, T f2)
+{
+    return fabs(f1-f2) < 1e-9;
 }
 
 #endif

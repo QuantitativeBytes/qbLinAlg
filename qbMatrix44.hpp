@@ -106,6 +106,7 @@ class qbMatrix44
 
 	private:
 		int Sub2Ind(int row, int col) const;
+		bool CloseEnough(T f1, T f2);
 
 	public:
 		//T *m_matrixData;
@@ -479,6 +480,9 @@ bool qbMatrix44<T>::Inverse()
 	
 	// Compute the inverse.
 	T determinant = Determinant();
+	if (CloseEnough(determinant, 0.0))
+		return false;
+			
 	qbMatrix44<T> result = (1.0 / determinant) * adjT;
 	
 	// And store 'in place'.
@@ -546,6 +550,12 @@ qbMatrix33<T> qbMatrix44<T>::FindSubMatrix(int rowNum, int colNum)
 	}
 	
 	return subMatrix;
+}
+
+template <class T>
+bool qbMatrix44<T>::CloseEnough(T f1, T f2)
+{
+    return fabs(f1-f2) < 1e-9;
 }
 
 #endif
