@@ -9,6 +9,12 @@ https://www.youtube.com/playlist?list=PL3WoIG-PLjSv9vFx2dg0BqzDZH_6qzF8-
 
 As this code is paired with the corresponding videos on the QuantitativeBytes YouTube channel, pull requests will not be accepted.
 
+## Changes
+New versions of the matrix and vector classes, qbVector2, qbVector3, qbVector4, qbMatrix33 and qbMatrix44 have been implemented for handling 2-element, 3-element and 4-element vectors and 3x3 and 4x4 matrices. These avoid the use of heap memory and are therefore faster than the generic qbVector and qbMatrix2 classes in cases where a fixed size is useful. This was implemented to support the qbRay ray tracer project and more details can be found over on the QuantitativeBytes YouTube channel here:
+
+https://youtu.be/EQlXfCIBpdg
+https://youtu.be/sr1OA7NPwcI
+
 ## Specific functions
 
 ### qbPCA.h
