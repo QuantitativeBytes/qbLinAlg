@@ -606,7 +606,7 @@ template <class T>
 bool qbMatrix2<T>::operator== (const qbMatrix2<T>& rhs)
 {
 	// Check if the matricies are the same size, if not return false.
-	if ((this->m_nRows != rhs.m_nRows) && (this->m_nCols != rhs.m_nCols))
+	if ((this->m_nRows != rhs.m_nRows) || (this->m_nCols != rhs.m_nCols))
 		return false;
 		
 	// Check if the elements are equal.
